@@ -23,16 +23,37 @@ public class SWRWorldHandler
 			if (wInfo.worldDir == "" || wInfo.templateDir == "")
 				break;
 			
-			File worldDir = new File(".\\" + wInfo.worldDir);
-			File templateDir = new File(".\\" + wInfo.templateDir);
+			String pathWorld = wInfo.worldDir.replace("//", File.separator);
+			pathWorld = wInfo.worldDir.replace("\\\\", File.separator);
 			
+			String pathTemplate = wInfo.templateDir.replace("//", File.separator);
+			pathTemplate = wInfo.templateDir.replace("\\\\", File.separator);
+			
+			File worldDir = new File(pathWorld);
+			File templateDir = new File(pathTemplate);
+			
+			SWReset.log("#######################################");
+			SWReset.log("## Server World Reset - Processing - ##");
+			SWReset.log("World [" + pathWorld + "]: " + worldDir.exists());
+			SWReset.log("Template [" + pathTemplate + "] " + templateDir.exists());
+			
+			if (!worldDir.exists() || !templateDir.exists())
+			{
+				SWReset.log(">> Error, a path doesn't exist. Aborting.");
+				return;
+			}
+			
+			SWReset.log(">> Deleting world directory.");
 			deleteFolder(worldDir);
 			
 			try {
+				SWReset.log(">> Copying world from template.");
 				FileUtils.copyDirectory(templateDir, worldDir);
 			} catch (IOException e) {
 				SWReset.log("" + e.getStackTrace());
 			}
+			
+			SWReset.log("#######################################");
 		}
 		
 		SWRConfig.setResetOnStart(false);

@@ -41,7 +41,7 @@ public class SWRConfig
 	
 	public static void setResetOnStart(boolean reset)
 	{
-		File cFile = new File(".\\config\\swreset.cfg");
+		File cFile = new File("config" + File.separator + "swreset.cfg");
 		
 		configuration = new Configuration(cFile);
 		
